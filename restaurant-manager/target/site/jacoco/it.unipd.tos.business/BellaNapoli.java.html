@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BellaNapoli.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">restaurant-manager</a> &gt; <a href="index.source.html" class="el_package">it.unipd.tos.business</a> &gt; <span class="el_source">BellaNapoli.java</span></div><h1>BellaNapoli.java</h1><pre class="source lang-java linenums">////////////////////////////////////////////////////////////////////
+// [Luca] [Stocco] [1125280]
+////////////////////////////////////////////////////////////////////
+
+package it.unipd.tos.business;
+
+import java.util.List;
+
+import it.unipd.tos.business.exception.RestaurantBillException;
+import it.unipd.tos.model.MenuItem;
+import it.unipd.tos.model.typeItem;;
+
+<span class="fc" id="L13">public class BellaNapoli implements RestaurantBill {</span>
+
+    @Override
+    public double getOrderPrice(List&lt;MenuItem&gt; itemsOrdered)
+            throws RestaurantBillException {
+<span class="fc bfc" id="L18" title="All 2 branches covered.">        if (itemsOrdered.size() &gt; 20) {</span>
+<span class="fc" id="L19">            throw new RestaurantBillException();</span>
+        }
+
+<span class="fc" id="L22">        double tot = itemsOrdered.stream()</span>
+<span class="fc" id="L23">                .mapToDouble(x -&gt; x.getPrice()).sum();</span>
+
+<span class="fc bfc" id="L25" title="All 2 branches covered.">        if (getNumPizza(itemsOrdered) &gt; 10) {</span>
+<span class="fc" id="L26">            tot -= itemsOrdered.stream()</span>
+<span class="fc" id="L27">                    .mapToDouble(x -&gt; x.getPrice())</span>
+<span class="fc" id="L28">                    .min().orElse(0);</span>
+        }
+
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        if (tot &gt; 100) {</span>
+<span class="fc" id="L32">            tot -= tot / 20;</span>
+        }
+
+<span class="fc" id="L35">        return tot;</span>
+
+    }
+
+    public int getNumPizza(List&lt;MenuItem&gt; itemsOrdered) {
+<span class="fc" id="L40">        return (int) itemsOrdered.stream()</span>
+<span class="fc" id="L41">                .filter(x -&gt; typeItem.PIZZA.equals(x.getItemType())).count();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
